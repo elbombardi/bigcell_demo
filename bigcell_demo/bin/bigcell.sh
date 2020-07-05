@@ -1,0 +1,1 @@
+java -classpath "$SPARK_HOME/jars/*:lib/*:conf/:target/*" tech.datarchy.bigcell.Main
