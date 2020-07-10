@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.apache.commons.lang3.Validate;
 
+import tech.datarchy.bigcell.demo1.BigCellCore.BigCellSpreadsheet.BigCellColumn;
+
 /**
  * 
  * @author wissem
@@ -422,10 +424,61 @@ class BigCellCommandLineInterpreter {
 
 		public Add(List<String> command) {
 			this.command = command;
+			this.usage = "add [row|column]"; 
+			
+			if (command == null || command.isEmpty() ) {
+				this.printUsage(); 
+			}
 		}
 
 		@Override
 		public void interpret(BigCellCore context) {
+			switch (command.get(0)) {
+			case "row": {
+				new AddRow(subcmd()).interpret(context); 
+				break;
+			}
+			case "column": {
+				new AddColumn(subcmd()).interpret(context);
+				break;
+			}
+			default : {
+				this.printUsage(); 
+			}
+			}
+		}
+		
+		//add row 
+		static class AddRow extends AbstractBigCellCommand {
+			public AddRow(List<String> command) {
+				this.command = command; 
+			}
+			@Override
+			public void interpret(BigCellCore context) {
+			}
+		}
+		
+		//add column <column_name> <formula>
+		static class AddColumn extends AbstractBigCellCommand {
+			private String columnName; 
+			private String formula; 
+			public AddColumn(List<String> command) {
+				this.command = command; 
+				this.usage = "add column <column_name> <formula>"; 
+				if (this.command == null || this.command.size() < 2) {
+					printUsage();
+				}
+				this.columnName = this.command.get(0); 
+				this.formula = this.command.get(1);
+			}
+			@Override
+			public void interpret(BigCellCore context) {
+				BigCellColumn col = new BigCellColumn(columnName);
+				col.setFormula(formula);
+				col.setComputed(true);
+				context.addColumn(col);
+				context.preview();
+			}
 		}
 	}
 	

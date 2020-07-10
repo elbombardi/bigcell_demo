@@ -102,6 +102,13 @@ public class BigCellSparkCore implements BigCellCore<Dataset> {
 	@Override
 	public void addColumn(BigCellColumn column) {
 		checkOpenSpreadsheet(); 
+		
+		Dataset data = mainStack.peek().data().withColumn(column.getName(), expr(column.getFormula()));
+		
+		BigCellSpreadSheetMeta meta = mainStack.peek().meta().clone(); 
+		meta.getColumns().add(column); 
+		
+		push(new BigCellSpreadsheet<Dataset>(data, meta)); 
 	}
 
 	@Override
@@ -136,13 +143,8 @@ public class BigCellSparkCore implements BigCellCore<Dataset> {
 		}
 		meta.getColumns().remove(column); 
 	
-		Dataset data = last.data(); 
-		Column[] projection = Arrays.stream(data.columns())
-			  .filter(c -> !c.equals(columnName))
-			  .map(functions::col)
-			  .toArray(Column[]::new);
-		data = data.select(projection); 
-		
+		Dataset data = last.data().drop(columnName); 
+
 		push(new BigCellSpreadsheet<Dataset>(data, meta));
 	}
 

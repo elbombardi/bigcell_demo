@@ -123,6 +123,7 @@ interface BigCellCore<T> {
 			private String name; 
 			private boolean computed = false;
 			private boolean hidden = false; 
+			private String formula; 
 
 			public BigCellColumn(String name) {
 				this.name = name; 
@@ -132,6 +133,7 @@ interface BigCellCore<T> {
 				BigCellColumn clone = new BigCellColumn(name); 
 				clone.setComputed(computed);
 				clone.setHidden(hidden); 
+				clone.setFormula(formula);
 				return clone; 
 			}
 			
@@ -153,6 +155,14 @@ interface BigCellCore<T> {
 			
 			public boolean isHidden() {
 				return hidden;
+			}
+			
+			public void setFormula(String formula) {
+				this.formula = formula;
+			}
+			
+			public String getFormula() {
+				return formula;
 			}
 		}
 		
