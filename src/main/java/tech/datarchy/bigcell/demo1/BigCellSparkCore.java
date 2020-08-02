@@ -170,6 +170,10 @@ public class BigCellSparkCore implements BigCellCore<Dataset> {
 	@Override
 	public void applyFilter(BigCellFilter filter) {
 		checkOpenSpreadsheet(); 
+		BigCellSpreadsheet<Dataset> spreadsheet = peek(); 
+		BigCellSpreadSheetMeta meta = spreadsheet.meta().clone(); 
+		meta.applyFilter(filter);
+		push(new BigCellSpreadsheet<Dataset>(spreadsheet.data(), meta));
 	}
 
 	@Override
@@ -180,6 +184,10 @@ public class BigCellSparkCore implements BigCellCore<Dataset> {
 	@Override
 	public void cancelFilter() {
 		checkOpenSpreadsheet(); 
+		BigCellSpreadsheet<Dataset> spreadsheet = peek(); 
+		BigCellSpreadSheetMeta meta = spreadsheet.meta().clone(); 
+		meta.cancelFilter();
+		push(new BigCellSpreadsheet<Dataset>(spreadsheet.data(), meta));
 	}
 
 	@Override
@@ -230,7 +238,12 @@ public class BigCellSparkCore implements BigCellCore<Dataset> {
 	public void preview() {
 		checkOpenSpreadsheet();
 		BigCellSpreadsheet<Dataset> last = peek(); 
-		last.data().select(getColumnsList(last.meta())).show();
+		Dataset dataset = last.data().select(getColumnsList(last.meta()));
+		if (last.meta().isFiltered()) {
+			dataset = dataset.filter(last.meta().getFilter().getExpression()); 
+			System.out.println("Filtered with : '" + last.meta().getFilter().getExpression() + "'");
+		}
+		dataset.show();
 	}
 	
 	@Override

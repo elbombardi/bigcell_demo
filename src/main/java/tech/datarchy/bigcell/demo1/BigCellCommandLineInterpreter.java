@@ -13,6 +13,7 @@ import org.apache.commons.lang3.Validate;
 import com.fasterxml.jackson.module.scala.util.Strings;
 
 import tech.datarchy.bigcell.demo1.BigCellCore.BigCellSpreadsheet.BigCellColumn;
+import tech.datarchy.bigcell.demo1.BigCellCore.BigCellSpreadsheet.BigCellFilter;
 
 /**
  * 
@@ -116,12 +117,6 @@ class BigCellCommandLineInterpreter {
 	}
 	
 	static class Root extends AbstractBigCellCommand {
-		
-		@Override
-		public void interpret(List<String> command, BigCellCore context) {
-			new Clear().interpret(command, context);
-			super.interpret(command, context);
-		}
 		
 		public Root() {
 			children = new LinkedHashMap<>(); 
@@ -397,7 +392,12 @@ class BigCellCommandLineInterpreter {
 
 			@Override
 			public void interpret(List<String> command, BigCellCore context) {
-				
+				if (command == null || command.isEmpty()) {
+					printUsage();
+				}
+				BigCellFilter filter = new BigCellFilter(command.get(0)); 
+				context.applyFilter(filter);
+				context.preview(); 
 			}
 		}
 	}
@@ -452,7 +452,8 @@ class BigCellCommandLineInterpreter {
 
 			@Override
 			public void interpret(List<String> command, BigCellCore context) {
-				
+				context.cancelFilter(); 
+				context.preview();
 			}
 		}
 	}

@@ -59,11 +59,15 @@ interface BigCellCore<T> {
 			private String path;
 			private boolean filtered = false;
 			private boolean sorted = false;
+			private BigCellFilter filter; 
 			private List<BigCellColumn> columns;
 			
 			public BigCellSpreadSheetMeta clone() {
 				BigCellSpreadSheetMeta clone = new BigCellSpreadSheetMeta(); 
 				clone.setFiltered(filtered);
+				if (filter != null) {
+					clone.setFilter(filter.clone());
+				}
 				clone.setSorted(sorted);
 				clone.setPath(path);
 				clone.setColumns(new ArrayList<>());
@@ -81,6 +85,24 @@ interface BigCellCore<T> {
 				this.filtered = filtered;
 			}
 
+			public BigCellFilter getFilter() {
+				return filter;
+			}
+			
+			public void setFilter(BigCellFilter filter) {
+				this.filter = filter;
+			}
+			
+			public void applyFilter(BigCellFilter filter) {
+				this.filter = filter; 
+				this.filtered = filter != null;
+			}
+			
+			public void cancelFilter() {
+				this.filtered = false; 
+				this.filter = null;
+			}
+			
 			public List<BigCellColumn> getColumns() {
 				return columns;
 			}
@@ -220,6 +242,11 @@ interface BigCellCore<T> {
 		
 		static class BigCellFilter {
 			private String expression; 
+			
+			public BigCellFilter clone() {
+				BigCellFilter clone = new BigCellFilter(this.expression);
+				return clone;
+			}
 			
 			public BigCellFilter(String expression) {
 				this.expression = expression; 
