@@ -8,7 +8,6 @@ import static org.apache.spark.sql.functions.row_number;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.EmptyStackException;
 import java.util.List;
 import java.util.Stack;
 
@@ -16,7 +15,6 @@ import org.apache.spark.sql.Column;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
-import org.apache.spark.sql.functions;
 import org.apache.spark.sql.expressions.Window;
 import org.apache.spark.sql.expressions.WindowSpec;
 
@@ -51,8 +49,9 @@ public class BigCellSparkCore implements BigCellCore<Dataset> {
 		spark = SparkSession
 				.builder()
 				.appName(appName)
-				.master("yarn")
-				.config("spark.hadoop.fs.defaultFS", "hdfs://localhost:9000")
+				.master("local[*]")
+				//.master("yarn")
+				//.config("spark.hadoop.fs.defaultFS", "hdfs://localhost:9000")
 				.config("spark.hadoop.yarn.resoursemanager.address", "localhost:8030")
 				.getOrCreate(); 
 		
@@ -67,6 +66,7 @@ public class BigCellSparkCore implements BigCellCore<Dataset> {
 		Dataset data = spark.read().option("header", "true").csv(filename); 
 		BigCellSpreadsheet<Dataset> spreadsheet = initSpreadsheet(data);
 		push(spreadsheet); 
+		
 	}
 
 	@Override

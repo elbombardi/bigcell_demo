@@ -54,11 +54,17 @@ public class Demo1 {
 	public void repl() {
 		while(true) {
 			String line = lineReader.readLine("bigcell> ");
+			System.out.print("\u001B[32m");
+			Long timestamp = System.currentTimeMillis(); 
 			try {
 				BigCellCommandLineInterpreter.interpret(line, core);	
-			} catch (Exception e) {
-				e.printStackTrace(); 
+			} 
+			catch (Exception e) {
+				System.out.print("\u001B[31m");
+				System.out.println(String.format("%s", e.getMessage())); 
 			}
+			System.out.println("\u001B[0m");
+			System.out.println(String.format("Elapsed time : %,d ms ", (System.currentTimeMillis() - timestamp)));
 		}
 	}
 	
