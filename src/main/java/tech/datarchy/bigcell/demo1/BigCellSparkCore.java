@@ -199,7 +199,12 @@ public class BigCellSparkCore implements BigCellCore<Dataset> {
 	public Long count() {
 		checkOpenSpreadsheet();
 		BigCellSpreadsheet<Dataset> last = peek(); 
-		return last.data().count();
+		Dataset data = last.data(); 
+		if (last.meta().isFiltered()) {
+			data = data.filter(last.meta().getFilter().getExpression()); 
+			System.out.println("Filtered with : '" + last.meta().getFilter().getExpression() + "'");
+		}
+		return data.count();
 	}
 	
 	@Override

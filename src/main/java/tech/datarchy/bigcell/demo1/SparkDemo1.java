@@ -8,8 +8,8 @@ import org.jline.reader.LineReaderBuilder;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 
-public class Demo1 {
-	final static private Logger LOG = Logger.getLogger(Demo1.class); 
+public class SparkDemo1 {
+	final static private Logger LOG = Logger.getLogger(SparkDemo1.class); 
 	
 	private BigCellCore core; 
 	
