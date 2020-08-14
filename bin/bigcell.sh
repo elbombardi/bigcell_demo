@@ -1,1 +1,14 @@
-java -classpath "$SPARK_HOME/jars/*:lib/*:conf/:target/*" tech.datarchy.bigcell.Main
+source $SPARK_HOME/conf/spark_env.sh
+export HADOOP_CLASS1=$HADOOP_HOME\share\hadoop\common\*
+export HADOOP_CLASS2=$HADOOP_HOME\share\hadoop\common\lib\*
+export HADOOP_CLASS3=$HADOOP_HOME\share\hadoop\mapreduce\*
+export HADOOP_CLASS4=$HADOOP_HOME\share\hadoop\mapreduce\lib\*
+export HADOOP_CLASS5=$HADOOP_HOME\share\hadoop\yarn\*
+export HADOOP_CLASS6=$HADOOP_HOME\share\hadoop\yarn\lib\*
+export HADOOP_CLASS7=$HADOOP_HOME\share\hadoop\hdfs\*
+export HADOOP_CLASS8=$HADOOP_HOME\share\hadoop\hdfs\lib\*
+export SPARK_CLASS=$SPARK_HOME/jars/*
+
+export BIGCELL_CLASSPATH=$HADOOP_CLASS1:$HADOOP_CLASS2:$HADOOP_CLASS3:$HADOOP_CLASS4:$HADOOP_CLASS5:$HADOOP_CLASS6:$HADOOP_CLASS7:$HADOOP_CLASS8:$SPARK_CLASS:lib/*:conf/:target/*
+
+java -classpath "$BIGCELL_CLASSPATH" tech.datarchy.bigcell.Main
