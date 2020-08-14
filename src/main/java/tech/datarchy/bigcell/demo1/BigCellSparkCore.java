@@ -123,11 +123,11 @@ public class BigCellSparkCore implements BigCellCore<Dataset> {
 		WindowSpec window = Window.orderBy(ORDER_COLUMN).partitionBy(lit(1)); 
 		BigCellSpreadsheet<Dataset> spreadsheet = mainStack.peek();
 		
-		Dataset data = spreadsheet.data()
-					.filter(expr(ROW_NUM_COLUMN + " != " + rowNumber))
-					.withColumn(ROW_NUM_COLUMN, row_number().over(window)); 
-		
-		//Dataset data = spreadsheet.data();
+//		Dataset data = spreadsheet.data()
+//					.filter(expr(ROW_NUM_COLUMN + " != " + rowNumber))
+//					.withColumn(ROW_NUM_COLUMN, row_number().over(window)); 
+
+		Dataset data = spreadsheet.data();
 		push(new BigCellSpreadsheet<Dataset>(data, spreadsheet.meta().clone()));
 	}
 
@@ -263,16 +263,16 @@ public class BigCellSparkCore implements BigCellCore<Dataset> {
 		BigCellSpreadSheetMeta meta = new BigCellSpreadSheetMeta(); 
 		meta.setColumns(new ArrayList<>());
 		
-		Arrays.asList(data.columns()).forEach( col -> {
-			BigCellColumn column = new BigCellColumn(col);
-			meta.getColumns().add(column); 
-		});
-		
-		WindowSpec window = Window.orderBy(ORDER_COLUMN).partitionBy(lit(1)); 
-
-		data = data.withColumn(ORDER_COLUMN, monotonically_increasing_id())
-				         .withColumn(NATURAL_ORDER_COLUMN, col(ORDER_COLUMN))
-				         .withColumn(ROW_NUM_COLUMN, row_number().over(window));
+//		Arrays.asList(data.columns()).forEach( col -> {
+//			BigCellColumn column = new BigCellColumn(col);
+//			meta.getColumns().add(column); 
+//		});
+//		
+//		WindowSpec window = Window.orderBy(ORDER_COLUMN).partitionBy(lit(1)); 
+//
+//		data = data.withColumn(ORDER_COLUMN, monotonically_increasing_id())
+//				         .withColumn(NATURAL_ORDER_COLUMN, col(ORDER_COLUMN))
+//				         .withColumn(ROW_NUM_COLUMN, row_number().over(window));
 
 		return new BigCellSpreadsheet<Dataset>(data, meta);
 		
@@ -286,7 +286,7 @@ public class BigCellSparkCore implements BigCellCore<Dataset> {
 	
 	private Column[] getColumnsList(BigCellSpreadSheetMeta meta) {
 		List<Column> columns = new ArrayList<>(); 
-		columns.add(col(ROW_NUM_COLUMN)); 
+//		columns.add(col(ROW_NUM_COLUMN)); 
 		meta.getColumns().forEach( c -> {
 			if (!c.isHidden()) {
 				columns.add(col(c.getName())); 	
