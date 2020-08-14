@@ -1,4 +1,4 @@
-source $SPARK_HOME/conf/spark_env.sh
+source $SPARK_HOME/conf/spark-env.sh
 export HADOOP_CLASS1=$HADOOP_HOME\share\hadoop\common\*
 export HADOOP_CLASS2=$HADOOP_HOME\share\hadoop\common\lib\*
 export HADOOP_CLASS3=$HADOOP_HOME\share\hadoop\mapreduce\*
