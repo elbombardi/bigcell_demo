@@ -49,7 +49,7 @@ public class BigCellSparkCore implements BigCellCore<Dataset> {
 		spark = SparkSession
 				.builder()
 				.appName(appName)
-				//.master("local[*]")
+//				.master("local[*]")
 				.master("yarn")
 				//.config("spark.hadoop.fs.defaultFS", "hdfs://localhost:9000")
 				//.config("spark.hadoop.yarn.resoursemanager.address", "localhost:8030")
@@ -263,11 +263,11 @@ public class BigCellSparkCore implements BigCellCore<Dataset> {
 		BigCellSpreadSheetMeta meta = new BigCellSpreadSheetMeta(); 
 		meta.setColumns(new ArrayList<>());
 		
-//		Arrays.asList(data.columns()).forEach( col -> {
-//			BigCellColumn column = new BigCellColumn(col);
-//			meta.getColumns().add(column); 
-//		});
-//		
+		Arrays.asList(data.columns()).forEach( col -> {
+			BigCellColumn column = new BigCellColumn(col);
+			meta.getColumns().add(column); 
+		});
+		
 //		WindowSpec window = Window.orderBy(ORDER_COLUMN).partitionBy(lit(1)); 
 //
 //		data = data.withColumn(ORDER_COLUMN, monotonically_increasing_id())
